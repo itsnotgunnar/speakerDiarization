@@ -8,6 +8,7 @@ import string
 import sys
 import os
 import re
+from videos import Videos
 
 class AudioProcessor:
     def __init__(self, sounds_id, file_path):
