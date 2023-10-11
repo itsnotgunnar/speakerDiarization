@@ -78,9 +78,9 @@ class AudioProcessor:
         return dz, lenAudio
 
     def millisec(timeStr):
-    spl = timeStr.split(":")
-    s = (int)((int(spl[0]) * 60 * 60 + int(spl[1]) * 60 + float(spl[2]) )* 1000)
-    return s
+        spl = timeStr.split(":")
+        s = (int)((int(spl[0]) * 60 * 60 + int(spl[1]) * 60 + float(spl[2]) )* 1000)
+        return s
 
     def primary_speaker(sounds_id): 
         dz = open(f'diarization_{sounds_id}.txt').read().splitlines()
