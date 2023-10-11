@@ -25,26 +25,49 @@ pip install pydub pyannote.audio huggingface_hub openai whisper logging string s
 
 ## Usage
 
-The `AudioProcessor` class is initialized with a `sounds_id` and a `file_path`. The `sounds_id` is used to identify the audio file and the `file_path` is the location of the audio file.
+Here's a simple example to get you started:
 
-The class contains several methods for processing the audio file:
+python
 
-- `get_video_id(video_url)`: Extracts the video ID from a YouTube URL.
-- `speaker_diarization(sounds_id,pipeline)`: Performs speaker diarization on the audio file.
-- `millisec(timeStr)`: Converts a time string to milliseconds.
-- `primary_speaker(sounds_id)`: Identifies the primary speaker in the audio file.
-- `chunk_primary(audio, sounds_id, speaker, directory_name)`: Splits the audio file into chunks based on the primary speaker.
-- `chunk_1_secs(audio, sounds_id, speaker)`: Splits the audio file into 1 second chunks.
-- `transcribe_directory(directory_name)`: Transcribes all audio files in a directory.
-- `audio_to_audioSeg(t1, t2)`: Converts a segment of the audio file to an `AudioSegment`.
-- `mainLoop(sounds_id, file)`: The main method for processing the audio file.
+from AudioProcessor import AudioProcessor
 
-To use the `AudioProcessor` class, create an instance of the class and call the `mainLoop` method:
+### Initialize the processor
 
-```python
-processor = AudioProcessor(sounds_id, file_path)
+processor = AudioProcessor(sounds_id="some_id", file_path="path/to/audio/file")
+
+### Run the main loop
+
 processor.mainLoop()
-```
+
+## Methods
+
+__init__(self, sounds_id, file_path)
+
+Initializes the AudioProcessor object.
+get_video_id(self, video_url)
+
+Extracts the video ID from a given URL.
+speaker_diarization(self)
+
+Performs speaker diarization on the audio file.
+millisec(self, timeStr)
+
+Converts a time string to milliseconds.
+primary_speaker(self)
+
+Identifies the primary speaker in the audio.
+chunk_primary(self)
+
+Segments the audio based on the primary speaker.
+transcribe_directory(self)
+
+Transcribes all .wav files in a given directory.
+audio_to_audioSeg(self, t1, t2)
+
+Extracts an audio segment between t1 and t2.
+mainLoop(self)
+
+The main function that ties all the methods together.
 
 ## Environment Variables
 
@@ -54,3 +77,11 @@ The script uses the following environment variables:
 - `HUG_USER1`: The API key for Hugging Face.
 
 Make sure to set these environment variables before running the script.
+
+## Contributing
+
+Feel free to open issues or PRs if you find any problems or have suggestions for improvements.
+
+## License
+
+MIT License
