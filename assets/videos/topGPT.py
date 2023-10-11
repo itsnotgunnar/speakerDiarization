@@ -1,7 +1,4 @@
 import sys
-sys.path.append("$HOME/miniconda3/envs/topGPT/topGPT")
-
-from topGPT.videos import Videos
 
 topGPT_videos = Videos("topGPT")
 

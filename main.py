@@ -14,63 +14,29 @@ class AudioProcessor:
     def __init__(self, sounds_id, file_path):
         self.sounds_id = sounds_id
         self.file_path = file_path
-        self.pipeline = None
+        self.pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=os.environ.get('HUG_USER1'))
         self.audio = None
         self.speaker = None
         self.lenAudio = None
         self.directory_name = f'./data/{self.sounds_id}'
-        self.init_pipeline()
+        if not os.path.exists(self.directory_name):
+            os.makedirs(self.directory_name)
 
     # create environments.txt file for conda env
 
-    videos = {
-        "girl-interview": "https://www.youtube.com/watch?v=HZ6FhDfa9UY",
-        "destroyed-woman": "https://www.youtube.com/watch?v=DgRV3F_7BdQ",
-        "funny-takes": "https://www.youtube.com/watch?v=DgRV3F_7BdQ",
-        "how-to-rich": "https://www.youtube.com/watch?v=U5ylEzE9ktU",
-        "destroys-feminist":"https://www.youtube.com/watch?v=AzKH0DCNowQ",
-        "sexist": "https://www.youtube.com/watch?v=gexkQ8Y2G80",
-        "best-podcast-moments": "https://www.youtube.com/watch?v=GOWFsme5u9E",
-        "motivation": "https://www.youtube.com/watch?v=BX1WpL2VlhM",
-        "quotes": "https://www.youtube.com/watch?v=lh4_41qpKUk",
-        "top-lessons":"https://www.youtube.com/watch?v=EJcRcj5vBj8",
-        "advice": "https://www.youtube.com/watch?v=3mBhMdthw-A",
-        "women-cheat": "https://www.youtube.com/watch?v=aaXVVgOIpJM",
-        "tiktok": "https://www.youtube.com/watch?v=TM7PWLBoh_o",
-        "funniest":  "https://www.youtube.com/watch?v=yvRB0inZdWE",
-        "toxic": "https://www.youtube.com/watch?v=G_D4r-24bgQ",
-        "reinvent": "https://www.youtube.com/watch?v=kQCTfEphctc",
-        "podcast-2": "https://www.youtube.com/watch?v=M3vw7-COfGA",
-        "coldest": "https://www.youtube.com/watch?v=nbwHftL2-98",
-        "piers-morgan": "https://www.youtube.com/watch?v=c1Whpnq1dAY",
-        "top-g": "https://www.youtube.com/watch?v=6VFn-1oJqlk",
-        "spitting-facts": "https://www.youtube.com/watch?v=-Ol2qiB9tdY",
-        "most-savage": "https://www.youtube.com/watch?v=RatbWBeA6Fk",
-        "brokies": "https://www.youtube.com/watch?v=IwPKg2kLkrg",
-        "coldest-p2": "https://www.youtube.com/watch?v=gpRYrV_YMps",
-        "islamic-faith": "https://www.youtube.com/watch?v=YzL_cRdba5k",
-        "male-advice": "https://www.youtube.com/watch?v=Gp2PwNcj2x4",
-        "inferior":"https://www.youtube.com/watch?v=U5ylEzE9ktU",
-        "speeches": "https://www.youtube.com/watch?v=Uw37yw1ZuEI",
-        "trolls-feminist": "https://www.youtube.com/watch?v=d4kAPWBH3e8",
-        "why-muslim": "https://www.youtube.com/watch?v=vnTiTg0Ouhs",
-        "weak-men": "https://www.youtube.com/watch?v=HtoxRMxb7yE",
-        "long-patrick": "https://www.youtube.com/watch?v=ZfuSRR1jf1o"
-    }
-
-    def get_video_id(video_url):
+    def get_video_id(self, video_url):
         video_id = re.findall(r'(?<=v=)[\w-]+', video_url)
         if not video_id:
             video_id = re.findall(r'(?<=be/)[\w-]+', video_url)
         return video_id[0]
 
-    def speaker_diarization(sounds_id,pipeline):
+    def speaker_diarization(self):
         print("started speaker_diarization")
-        TATE_FILE = {'uri': 'blabal', 'audio': f'./data/{sounds_id}.wav'} # TODO INCREMENT FILE
-        dz = pipeline(TATE_FILE)
+        TATE_FILE = {'uri': 'blabal', 'audio': f'./data/{self.sounds_id}.wav'} # TODO INCREMENT FILE
+        dz = self.pipeline(TATE_FILE)
         howdy = dz
         lenAudio = len(dz) * 1000
-        with open(f"diarization_{sounds_id}.txt", "w") as text_file:
+        with open(f"diarization_{self.sounds_id}.txt", "w") as text_file:
             text_file.write(str(dz) + '\n')
             text_file.write(("-" * 30) + "\n")
             with open("tateDump.txt", "a") as dump:
@@ -78,13 +44,13 @@ class AudioProcessor:
         print("finished speaker_diarization")
         return dz, lenAudio
 
-    def millisec(timeStr):
+    def millisec(self, timeStr):
         spl = timeStr.split(":")
         s = (int)((int(spl[0]) * 60 * 60 + int(spl[1]) * 60 + float(spl[2]) )* 1000)
         return s
 
-    def primary_speaker(sounds_id): 
-        dz = open(f'diarization_{sounds_id}.txt').read().splitlines()
+    def primary_speaker(self): 
+        dz = open(f'diarization_{self.sounds_id}.txt').read().splitlines()
         speaker_dict, speaker, speaker_clout, = {}, '', 0
         spacer = AudioSegment.silent(duration=2000)
         for i in range(len(dz) - 2):
@@ -92,8 +58,8 @@ class AudioProcessor:
                 break
             line = dz[i]
             start, end =  tuple(re.findall('[0-9]+:[0-9]+:[0-9]+\.[0-9]+', string=line))
-            start = int(millisec(start))
-            end = int(millisec(end))
+            start = int(self.millisec(start))
+            end = int(self.millisec(end))
             first_letter = re.search("[a-zA-z]", line)
             name = line[line.find('SPEAKER'):]
             if name not in speaker_dict.keys():
@@ -107,9 +73,9 @@ class AudioProcessor:
         speaker = speaker[re.search("[a-zA-Z]", speaker).start():]
         return speaker, speaker_dict[speaker]
 
-    def chunk_primary(audio, sounds_id, speaker, directory_name):
-        dz = open(f'diarization_{sounds_id}.txt').read().splitlines()
-        print(speaker)
+    def chunk_primary(self):
+        dz = open(f'diarization_{self.sounds_id}.txt').read().splitlines()
+        print(self.speaker)
         spacer = AudioSegment.silent(duration=10)
         sounds = spacer
         segments = []
@@ -120,26 +86,27 @@ class AudioProcessor:
                 break
             line = dz[i]
             start, end =  tuple(re.findall('[0-9]+:[0-9]+:[0-9]+\.[0-9]+', string=line))
-            start = int(millisec(start))
-            end = int(millisec(end))
+            start = int(self.millisec(start))
+            end = int(self.millisec(end))
             chunk_length = (end - start) // 1000
             if line[0] == '-':
                 return sounds, segments
             name = line[line.find('SPEAKER'):]
-            if name == speaker and chunk_index > 0:
+            if name == self.speaker and chunk_index > 0:
                 chunk_index += 1
-                audioChunk = audio[start:end]
+                audioChunk = self.audio[start:end]
                 # sounds = spacer
                 # segments.append(len(sounds))
                 # sounds = sounds.append(audio[start:end], crossfade=0)
-                audioChunk.export(f"{directory_name}/{sounds_id}p{chunk_index}-{chunk_length}secs.wav", format="wav")
+                audioChunk.export(f"{self.directory_name}/{sounds_id}p{chunk_index}-{chunk_length}secs.wav", format="wav")
         return (sounds, segments) # sounds getting wiped
 
 
-    def chunk_1_secs(audio, sounds_id, speaker): # made to train speech recognition 
+    def chunk_1_secs(self):
+        # made to train speech recognition, NOT USED
         directory_name = f'./recognition_dataset/audio_tate'
         dz = open('diarization.txt').read().splitlines()
-        print(speaker)
+        print(self.speaker)
         spacer = AudioSegment.silent(duration=0)
         sounds = spacer
         segments = []
@@ -150,17 +117,17 @@ class AudioProcessor:
                 break
             line = dz[i]
             start, end =  tuple(re.findall('[0-9]+:[0-9]+:[0-9]+\.[0-9]+', string=line))
-            start = int(millisec(start))
-            end = int(millisec(end))
+            start = int(self.millisec(start))
+            end = int(self.millisec(end))
             chunk_length = (end - start) // 1000
             if line[0] == '-':
                 return sounds, segments
             name = line[line.find('SPEAKER'):]
-            if name == speaker and chunk_index > 0:
+            if name == self.speaker and chunk_index > 0:
                 chunk_start = 0
                 chunk_end = 1000
                 for j in range(chunk_length):
-                    audioChunk = audio[start:end]
+                    audioChunk = self.audio[start:end]
                     audioChunk.export(f"{directory_name}/{chunk_index}.wav", format="wav")
                     chunk_start += 1000
                     chunk_end += 1000
@@ -168,14 +135,14 @@ class AudioProcessor:
         
         # return (sounds, segments) 
 
-    def transcribe_directory(directory_name):
+    def transcribe_directory(self):
         model = whisper.load_model("base.en")
         # Loop through the files in the specified directory
-        for file_name in os.listdir(directory_name):
+        for file_name in os.listdir(self.directory_name):
             # Check if the file has a '.wav' extension
             if file_name.endswith('.wav'):
                 # Get the full file path
-                file_path = os.path.join(directory_name, file_name)
+                file_path = os.path.join(self.directory_name, file_name)
 
                 # Load and transcribe the audio segment using Whisper
                 whisper_audio = open(file=file_path)
@@ -189,13 +156,13 @@ class AudioProcessor:
                 with open(f"{os.path.splitext(file_path)[0]}.txt", "a") as f:
                     f.write(str(transcript))
 
-    def audio_to_audioSeg(t1, t2): # may need to increment index to keep segments
+    def audio_to_audioSeg(self, t1, t2): # may need to increment index to keep segments
         a = AudioSegment.from_wav() # TODO INCREMENT FILE
         audioSegment = a[t1:t2]
         audioSegment.export("audio.wav", format="wav")
         # return audioSegment # commenting only to see whether this is currently used (5/1/23)
 
-    def mainLoop(sounds_id, file): # TODO 'get_video_id(video_url)' not used, could not for dict key if not id or could use for file name and key 
+    def mainLoop(self): # TODO 'get_video_id(video_url)' not used, could not for dict key if not id or could use for file name and key 
         openai.api_key = os.environ.get("OPENAI_API_KEY")
         key = os.environ.get('HUG_USER1')
         pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=key)               
@@ -204,13 +171,13 @@ class AudioProcessor:
         status = True
         directory_name = f'./data/{sounds_id}'
         if not os.path.exists(directory_name):
-        os.makedirs(directory_name)
+            os.makedirs(directory_name)
         audio = AudioSegment.from_wav(f'./data/downloads/{sounds_id}.wav')
         audio.export(f"tate_audios/audio_{sounds_id}", "wav")
-        speaker_diarization(sounds_id, pipeline) # does this run the function again (bc pipeline)
-        speaker, lenAudio = primary_speaker(sounds_id)
+        self.speaker_diarization() # does this run the function again (bc pipeline)
+        speaker, lenAudio = self.primary_speaker()
         print(lenAudio)
-        chunk_primary(audio, sounds_id, speaker, directory_name)
+        self.chunk_primary()
         # chunk_1_secs(audio, sounds_id, speaker)
         # transcribe_directory(directory_name)
 
