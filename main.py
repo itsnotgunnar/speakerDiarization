@@ -10,17 +10,25 @@ import os
 import re
 from videos import Videos
 
+
+# Add HUGGINGFACE_API_KEY using HfApi
+
 class AudioProcessor:
-    def __init__(self, sounds_id, file_path):
+    def __init__(self, speaker_name, sounds_id, file_path):
+        self.OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+        self.HUGGINGFACE_TOKEN = os.environ.get("HUGGINGFACE_TOKEN_KEY")
         self.sounds_id = sounds_id
         self.file_path = file_path
-        self.pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=os.environ.get('HUG_USER1'))
+        self.speaker_name = speaker_name
+        self.pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization@2.1",
+                                                 use_auth_token=self.HUGGINGFACE_TOKEN)
         self.audio = None
         self.speaker = None
         self.lenAudio = None
-        self.directory_name = f'./data/{self.sounds_id}'
+        self.directory_name = f'./assets/{self.speaker}/{self.sounds_id}'
         if not os.path.exists(self.directory_name):
             os.makedirs(self.directory_name)
+
 
     # create environments.txt file for conda env
 
@@ -32,7 +40,7 @@ class AudioProcessor:
 
     def speaker_diarization(self):
         print("started speaker_diarization")
-        TATE_FILE = {'uri': 'blabal', 'audio': f'./data/{self.sounds_id}.wav'} # TODO INCREMENT FILE
+        TATE_FILE = {'uri': 'blabal', 'audio': f'./assets/{self.speaker_name}/{self.sounds_id}.wav'} # TODO INCREMENT FILE
         dz = self.pipeline(TATE_FILE)
         howdy = dz
         lenAudio = len(dz) * 1000
@@ -169,20 +177,20 @@ class AudioProcessor:
         print(sounds_id)
         t1, t2 = 0, 600000 # 10 minutes segments default / handle in audio_to_segment
         status = True
-        directory_name = f'./data/{sounds_id}'
+        directory_name = f'./assets/tate/{sounds_id}'
         if not os.path.exists(directory_name):
             os.makedirs(directory_name)
-        audio = AudioSegment.from_wav(f'./data/downloads/{sounds_id}.wav')
+        audio = AudioSegment.from_wav(f'./assets/downloads/{sounds_id}.wav')
         audio.export(f"tate_audios/audio_{sounds_id}", "wav")
         self.speaker_diarization() # does this run the function again (bc pipeline)
         speaker, lenAudio = self.primary_speaker()
         print(lenAudio)
         self.chunk_primary()
         # chunk_1_secs(audio, sounds_id, speaker)
-        # transcribe_directory(directory_name)
+        self.transcribe_directory(directory_name)
 
 if __name__ == "__main__":
     for sounds_id in range(32):
-        processor = AudioProcessor(sounds_id, f'/home/gunna/.conda/envs/gpTate/tate_downloads/{sounds_id}.wav')
+        processor = AudioProcessor('tate', sounds_id, f'/home/gunna/.conda/envs/gpTate/tate_downloads/{sounds_id}.wav')
         processor.mainLoop()
     print("Finished transcription!")

@@ -1,5 +1,7 @@
 import sys
 
+from ...videos import Videos
+
 topGPT_videos = Videos("topGPT")
 
 topGPT_video_dict = {
