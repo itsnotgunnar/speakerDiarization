@@ -4,7 +4,7 @@ This Python script contains a class `AudioProcessor` which is used for processin
 
 ## Dependencies
 
-This repository uses a conda environment, once you have miniconda3 or anaconda installed run the following script:
+This repository uses a conda environment - once you have Miniconda or Anaconda installed run the following script, replacing myenv with the name of your environment:
 
 ```
 conda env create -f environment.yml
