@@ -4,7 +4,7 @@ This Python script contains a class `AudioProcessor` which is used for processin
 
 ## Dependencies
 
-You must setup a conda environment. Download Miniconda3 or Anaconda and run the following script:
+This repository uses a conda environment, once you have miniconda3 or anaconda installed run the following script:
 
 ```
 conda env create -f environment.yml
