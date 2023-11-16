@@ -4,19 +4,6 @@ This Python script contains a class `AudioProcessor` which is used for processin
 
 ## Dependencies
 
-To run this script, you need to install the following Python libraries:
-
-- pydub
-- pyannote.audio
-- huggingface_hub
-- openai
-- whisper
-- logging
-- string
-- sys
-- os
-- re
-
 You can install these libraries using pip:
 
 ```
