@@ -70,7 +70,3 @@ Make sure to set these environment variables before running the script.
 ## Contributing
 
 Feel free to open issues or PRs if you find any problems or have suggestions for improvements.
-
-## License
-
-MIT License
