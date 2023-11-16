@@ -1,13 +1,15 @@
 # speakerDiarization
 
-This Python script contains a class `AudioProcessor` which is used for processing audio files. The class uses several libraries including `pydub`, `pyannote.audio`, `huggingface_hub`, `openai`, `whisper`, `logging`, `string`, `sys`, `os`, `re`, and `videos`.
+This Python script contains a class `AudioProcessor` which is used for processing audio files. 
 
 ## Dependencies
 
-You can install these libraries using pip:
+You must setup a conda environment. Download Miniconda3 or Anaconda and run the following script:
 
 ```
-pip install pydub pyannote.audio huggingface_hub openai whisper logging string sys os re
+conda env create -f environment.yml
+conda activate myenv
+source activate myenv
 ```
 
 ## Usage
