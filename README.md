@@ -1,4 +1,5 @@
-# speakerDiarization DEPRECATED: OPENAI DOES IT BETTER
+# DEPRECATED: OPENAI DOES IT BETTER
+# speakerDiarization
 
 This Python script contains a class `AudioProcessor` which is used for processing audio files. 
 
