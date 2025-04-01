@@ -1,73 +1,91 @@
-# DEPRECATED: OPENAI DOES IT BETTER
-# speakerDiarization
+# ♫ Speaker Diarization ♫
 
-This Python script contains a class `AudioProcessor` which is used for processing audio files. 
+> A Python script for processing audio files, featuring speaker recognition and more.
 
-## Dependencies
+---
 
-This repository uses a conda environment - once you have Miniconda or Anaconda installed run the following script, replacing myenv with the name of your environment:
+## 🚀 Features at a Glance
 
-```
+- **Speaker Diarization**: Identify who’s speaking and when.  
+- **Primary Speaker Detection**: Find out who talks the most.  
+- **Audio Segmentation**: Extract and manipulate audio segments.  
+- **Batch Processing**: Transcribe entire directories of audio files.
+
+---
+
+## 📦 Dependencies
+
+This repository uses a conda environment. Once you have **Miniconda** or **Anaconda** installed, run the following commands (replacing <MY_ENV> with the name of your environment):
+
+```bash
 conda env create -f environment.yml
-conda activate myenv
-source activate myenv
+conda activate <MY_ENV>
+source activate <MY_ENV>
 ```
 
-## Usage
+---
 
-Here's a simple example to get you started:
+## ⚙️ Usage
 
-python
+A simple example to get you started:
 
+```python
 from AudioProcessor import AudioProcessor
 
-### Initialize the processor
-
+# 1. Initialize the processor
 processor = AudioProcessor(sounds_id="some_id", file_path="path/to/audio/file")
 
-### Run the main loop
-
+# 2. Run the main loop
 processor.mainLoop()
+```
 
-## Methods
+---
 
-__init__(self, sounds_id, file_path)
+## 🛠️ Class Methods Breakdown
 
-Initializes the AudioProcessor object.
-get_video_id(self, video_url)
+Below is a rundown of the main methods in the `AudioProcessor` class:
 
-Extracts the video ID from a given URL.
-speaker_diarization(self)
+1. **__init__(self, sounds_id, file_path)**  
+   Initializes the AudioProcessor object.
 
-Performs speaker diarization on the audio file.
-millisec(self, timeStr)
+2. **get_video_id(self, video_url)**  
+   Extracts the video ID from a given URL.
 
-Converts a time string to milliseconds.
-primary_speaker(self)
+3. **speaker_diarization(self)**  
+   Performs speaker diarization on the audio file.
 
-Identifies the primary speaker in the audio.
-chunk_primary(self)
+4. **millisec(self, timeStr)**  
+   Converts a time string to milliseconds.
 
-Segments the audio based on the primary speaker.
-transcribe_directory(self)
+5. **primary_speaker(self)**  
+   Identifies the primary speaker in the audio.
 
-Transcribes all .wav files in a given directory.
-audio_to_audioSeg(self, t1, t2)
+6. **chunk_primary(self)**  
+   Segments the audio based on the primary speaker.
 
-Extracts an audio segment between t1 and t2.
-mainLoop(self)
+7. **transcribe_directory(self)**  
+   Transcribes all .wav files in a given directory.
 
-The main function that ties all the methods together.
+8. **audio_to_audioSeg(self, t1, t2)**  
+   Extracts an audio segment between t1 and t2.
 
-## Environment Variables
+9. **mainLoop(self)**  
+   Orchestrates all the methods, providing an end-to-end processing flow.
 
-The script uses the following environment variables:
+---
 
-- `OPENAI_API_KEY`: The API key for OpenAI.
-- `HUG_USER1`: The API key for Hugging Face.
+## 🔑 Environment Variables
 
-Make sure to set these environment variables before running the script.
+Be sure to set these environment variables before running the script:
 
-## Contributing
+- `OPENAI_API_KEY` – Your OpenAI API key.  
+- `HUG_USER1` – Your Hugging Face API key.
 
-Feel free to open issues or PRs if you find any problems or have suggestions for improvements.
+---
+
+## 🙌 Contributing
+
+Got ideas or found a bug? Feel free to open an issue or submit a PR. Contributions are always welcome!  
+Let’s make this project even better, together. 
+
+---
