@@ -1,10 +1,10 @@
-# ♫ Speaker Diarization ♫
+# Speaker Diarization
 
 > A Python script for processing audio files, featuring speaker recognition and more.
 
 ---
 
-## 🚀 Features at a Glance
+## Features at a Glance
 
 - **Speaker Diarization**: Identify who’s speaking and when.  
 - **Primary Speaker Detection**: Find out who talks the most.  
@@ -13,7 +13,7 @@
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 This repository uses a conda environment. Once you have **Miniconda** or **Anaconda** installed, run the following commands (replacing <MY_ENV> with the name of your environment):
 
@@ -25,7 +25,7 @@ source activate <MY_ENV>
 
 ---
 
-## ⚙️ Usage
+## Usage
 
 A simple example to get you started:
 
@@ -41,7 +41,7 @@ processor.mainLoop()
 
 ---
 
-## 🛠️ Class Methods Breakdown
+## Class Methods Breakdown
 
 Below is a rundown of the main methods in the `AudioProcessor` class:
 
@@ -74,7 +74,7 @@ Below is a rundown of the main methods in the `AudioProcessor` class:
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
 Be sure to set these environment variables before running the script:
 
@@ -83,7 +83,7 @@ Be sure to set these environment variables before running the script:
 
 ---
 
-## 🙌 Contributing
+## Contributing
 
 Got ideas or found a bug? Feel free to open an issue or submit a PR. Contributions are always welcome!  
 Let’s make this project even better, together. 
